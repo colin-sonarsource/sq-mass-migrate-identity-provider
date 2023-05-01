@@ -26,4 +26,4 @@ jobs:
             -Dsonar.projectKey=demo \
             -Dsonar.sources=. \
             -Dsonar.host.url=https://c8dbde5e6aef.ngrok.app/ \
-            -Dsonar.token=sqa_66c3f4a392c3fe0b2930982605e3cf79efdc71af
+            -Dsonar.token=sqa_481c2986ee81a72f3b630715bbae5016183e7070
