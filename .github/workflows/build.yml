@@ -1,24 +1,29 @@
-name: Build
+name: sonar
+
 on:
-  push:
+  pull_request:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+
 jobs:
-  sonarcloud:
-    name: SonarCloud
+
+  common:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.qualitygate.wait=true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
+
+      - name: sonar
+        run: |
+
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856.zip -O /tmp/sonar-scanner.zip
+          unzip /tmp/sonar-scanner.zip -d /tmp
+          mv /tmp/sonar-scanner-* /tmp/sonar-scanner
+          rm /tmp/sonar-scanner.zip
+          export PATH="$PATH:/tmp/sonar-scanner/bin"
+
+          sonar-scanner -X \
+            -Dsonar.projectKey=demo \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://c8dbde5e6aef.ngrok.app/ \
+            -Dsonar.token=sqa_66c3f4a392c3fe0b2930982605e3cf79efdc71af
