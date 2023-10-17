@@ -39,7 +39,7 @@ foreach($user in $users){
     # Prevents local users from being locked out of the SonarQube instance
     if($isLocal -eq $false){
         # Only migrate users of the exsiting identity provider
-        if($externalProvider = $currentExternalIdentityProvider){
+        if($externalProvider -eq $currentExternalIdentityProvider){
             Invoke-RestMethod -Uri "$sonarQubeInstance/api/users/update_identity_provider?login=$login&newExternalProvider=$targetExternalIdentityProvider&newExternalIdentity=$newExternalIdentity" -Headers $headers -Method POST
             Write-Output "Migrated user with login $login and external identity $externalIdentity from $currentExternalIdentityProvider to $targetExternalIdentityProvider with new external identity $newExternalIdentity"
         }
